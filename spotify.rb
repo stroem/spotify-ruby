@@ -221,6 +221,14 @@ module Spotify
 
       @config[:callbacks] = session_callbacks.to_ptr
     end
+    
+    def music_delivery(sess, format, frames, num_frames)
+    	## WEEEEEEEEEEEEE
+    	
+    	puts "AWESOME MUSIC OF DOOM"
+    	
+    	return num_frames
+    end
 
     def create_session
       session_ptr_ptr = FFI::MemoryPointer.new(4)
