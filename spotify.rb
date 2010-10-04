@@ -5,7 +5,7 @@ require "thread"
 module Spotify
   extend FFI::Library
 
-  ffi_lib "./libspotify.so"
+  ffi_lib "./lib/libspotify.so"
 
   API_VERSION = 1
   LINK_TYPES = [:invalid, :track, :album, :artist, :search, :playlist]
