@@ -1,6 +1,7 @@
 require "rubygems"
 require "ffi"
 require "thread"
+require "alsa"
 
 module Spotify
   extend FFI::Library
@@ -215,17 +216,22 @@ module Spotify
       session_callbacks[:connection_error]   = lambda { |*args| invoke_callback(:on_connection_error, *args) }
       session_callbacks[:message_to_user]    = lambda { |*args| invoke_callback(:on_message_to_user, *args) }
       session_callbacks[:notify_main_thread] = method(:notify_main_thread).to_proc
-      session_callbacks[:music_delivery]     = lambda { |*args| invoke_callback(:on_music_delivery, *args) }
+      session_callbacks[:music_delivery]     = method(:music_delivery).to_proc
       session_callbacks[:play_token_lost]    = lambda { |*args| invoke_callback(:on_lost_play_token, *args) }
       session_callbacks[:log_message]        = lambda { |*args| invoke_callback(:on_log_message, *args) }
 
       @config[:callbacks] = session_callbacks.to_ptr
     end
     
+    # not implemented
     def music_delivery(sess, format, frames, num_frames)
-    	## WEEEEEEEEEEEEE
     	
-    	puts "AWESOME MUSIC OF DOOM"
+    	puts "Playing music"
+    	ALSA::PCM::Playback.open do |playback|
+			playback.write do |length|
+				$stdin.read(length)
+			end
+		end
     	
     	return num_frames
     end
